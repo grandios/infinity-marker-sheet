@@ -61,7 +61,7 @@ For each kind of marker, an appropriate set of size choices are available.
 This page features redesigned N5 tokens are created by <a href='https://forum.corvusbelli.com/threads/n4-c1-token-design-questions.37936/'>Lawson Deming</a>.
 </p>
 
-<form method='post'>
+<form method='post' target="_blank">
 <h2>Layout</h2>
 <p>
 <b>Paper Size: </b>
@@ -75,6 +75,16 @@ This page features redesigned N5 tokens are created by <a href='https://forum.co
 <b>Padding: </b>
 <input type='text' name='pad_mm' value='1'>
 mm
+</p>
+
+<p>
+<b>Back side: </b>
+<input type='checkbox' name='back_side' value='1'>
+</p>
+
+<p>
+<b>Page border: </b>
+<input type='checkbox' name='page_border' value='1'>
 </p>
 
 <h2>Markers</h2>
@@ -170,8 +180,18 @@ EOF
     my $max_height = 0;
     my $pad_mm = param('pad_mm') // 1;
     my $pad = $pad_mm / 25.4 * 72.0;
+    my $back_side = param('back_side') // 0;
+    my $page_border = param('page_border') // 0;
 
     my $page = $pdf->page();
+
+    if($page_border eq 1){
+        my $border = $page->gfx;
+        $border->strokecolor('black');
+        $border->rect($min_x - 1, $min_y - 1, $max_x - $min_x + 2, $max_y - $min_y + 2);
+        $border->stroke();
+    }
+
     for my $marker (@$annotations){
         my $num = param($marker->{label});
         if($num){
@@ -211,7 +231,7 @@ EOF
                 }
 
                 my $gfx = $page->gfx();
-                $gfx->image($img, $x, $y - $scaled_height, $scale);
+                $gfx->image($img, $back_side eq 1 ? ($max_x + $min_x - $x - $scaled_width) : $x, $y - $scaled_height, $scale);
                 $x += $scaled_width + $pad;
             }
         }
