@@ -8,7 +8,7 @@ clean:
 	mkdir thumb
 
 lawson: .PHONY
-	./doconversion.pl lawson png
+	perl ./doconversion.pl lawson png
 
 install:
 	rm -rf /var/www/infinity/markers/n5/png/

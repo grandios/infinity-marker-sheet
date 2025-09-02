@@ -1,0 +1,9 @@
+services:
+  web:
+    labels:
+      traefik.http.routers.infinity-marker-sheet.rule: Host(`infinity-marker-sheet.vm`)
+
+networks:
+  default:
+    name: dev-net
+    external: true

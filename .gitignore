@@ -1,4 +1,5 @@
-n3
-jpg
-thumb
-lawson/.DS_Store
+.DS_Store
+.idea
+/png
+/thumb
+/compose.override.yaml
